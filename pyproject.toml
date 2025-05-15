@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "icisk-orchestrator-db"
+version = "0.1.0"
+description = "Database manager and interface for ICisk-Orchestrator project"
+authors = [
+    { name="Tommaso Redaelli", email="tommaso.redaelli@gecosistema.com" }
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pymongo",
+    "nbformat"
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "mypy"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
