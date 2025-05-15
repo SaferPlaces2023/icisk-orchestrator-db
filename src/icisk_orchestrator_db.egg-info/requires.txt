@@ -1,7 +1,0 @@
-pymongo
-nbformat
-
-[dev]
-pytest
-black
-mypy

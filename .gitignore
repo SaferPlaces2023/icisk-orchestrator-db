@@ -3,3 +3,7 @@ venv/
 
 # Test folder
 tests/
+
+# Python cache
+**/__pycache__/
+**/*egg-info*/
