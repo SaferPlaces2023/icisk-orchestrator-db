@@ -33,11 +33,40 @@ class DatabaseInterface():
         if self.client is None:
             self.client = MongoClient(self.connection_string)
             self.db = self.client[self.db_name]
+            self.populate_db()
         
     def disconnect(self):
         if self.client is not None:
             self.client.close()
             self.client = None
+            
+    def populate_db(self):
+        
+        ADMIN_USER_ID = os.environ.get("ADMIN_USER_ID", "admin")
+        ADMIN_USER_EMAIL = os.environ.get("ADMIN_USER_EMAIL", None)
+        
+        admin_exists = self.db[DBS.Collections.USERS].find_one({ 'user_id': ADMIN_USER_ID })
+        if admin_exists is None:
+            print(f"Creating admin user with id {ADMIN_USER_ID} and email {ADMIN_USER_EMAIL}")
+            self.db[DBS.Collections.USERS].insert_one({
+                "user_id": ADMIN_USER_ID,
+                "email": ADMIN_USER_EMAIL
+            })
+        else:
+            print(f"Admin user with id {ADMIN_USER_ID} already exists")
+            
+        TEST_USER_ID = os.environ.get("TEST_USER_ID", "test")
+        TEST_USER_EMAIL = os.environ.get("TEST_USER_EMAIL", None)
+        
+        test_exists = self.db[DBS.Collections.USERS].find_one({ 'user_id': TEST_USER_ID })
+        if test_exists is None:
+            print(f"Creating test user with id {TEST_USER_ID} and email {TEST_USER_EMAIL}")
+            self.db[DBS.Collections.USERS].insert_one({
+                "user_id": TEST_USER_ID,
+                "email": TEST_USER_EMAIL
+            })
+        else:
+            print(f"Test user with id {TEST_USER_ID} already exists")
             
     
     def save_notebook(
