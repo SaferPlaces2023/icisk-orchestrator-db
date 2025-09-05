@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "icisk-orchestrator-db"
-version = "0.1.1"
+version = "0.1.2"
 description = "Database manager and interface for ICisk-Orchestrator project"
 authors = [
     { name="Tommaso Redaelli", email="tommaso.redaelli@gecosistema.com" }
