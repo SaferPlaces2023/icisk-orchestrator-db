@@ -18,17 +18,17 @@ class DatabaseInterface():
     db = None
     
     def __init__(self):
-        print('Initializing DatabaseInterface')
-        print(f'Connection string: {_CONNECTION_STRING}')
-        print(f'Database name: {_DB_NAME}')
+        db_utils.log('Initializing DatabaseInterface')
+        db_utils.log(f'Connection string: {_CONNECTION_STRING}')
+        db_utils.log(f'Database name: {_DB_NAME}')
         self.connection_string = _CONNECTION_STRING
         self.db_name = _DB_NAME
         
         
     def connect(self):
-        print('Connecting to database')
-        print(f'Connection string: {self.connection_string}')
-        print(f'Database name: {self.db_name}')
+        db_utils.log('Connecting to database')
+        db_utils.log(f'Connection string: {self.connection_string}')
+        db_utils.log(f'Database name: {self.db_name}')
 
         if self.client is None:
             self.client = MongoClient(self.connection_string)
@@ -47,26 +47,26 @@ class DatabaseInterface():
         
         admin_exists = self.db[DBS.Collections.USERS].find_one({ 'user_id': ADMIN_USER_ID })
         if admin_exists is None:
-            print(f"Creating admin user with id {ADMIN_USER_ID} and email {ADMIN_USER_EMAIL}")
+            db_utils.log(f"Creating admin user with id {ADMIN_USER_ID} and email {ADMIN_USER_EMAIL}")
             self.db[DBS.Collections.USERS].insert_one({
                 "user_id": ADMIN_USER_ID,
                 "email": ADMIN_USER_EMAIL
             })
         else:
-            print(f"Admin user with id {ADMIN_USER_ID} already exists")
+            db_utils.log(f"Admin user with id {ADMIN_USER_ID} already exists")
             
         TEST_USER_ID = os.environ.get("TEST_USER_ID", "test")
         TEST_USER_EMAIL = os.environ.get("TEST_USER_EMAIL", None)
         
         test_exists = self.db[DBS.Collections.USERS].find_one({ 'user_id': TEST_USER_ID })
         if test_exists is None:
-            print(f"Creating test user with id {TEST_USER_ID} and email {TEST_USER_EMAIL}")
+            db_utils.log(f"Creating test user with id {TEST_USER_ID} and email {TEST_USER_EMAIL}")
             self.db[DBS.Collections.USERS].insert_one({
                 "user_id": TEST_USER_ID,
                 "email": TEST_USER_EMAIL
             })
         else:
-            print(f"Test user with id {TEST_USER_ID} already exists")
+            db_utils.log(f"Test user with id {TEST_USER_ID} already exists")
             
     
     def save_notebook(
@@ -94,7 +94,7 @@ class DatabaseInterface():
         # DOC: If notebook_id is None, we are creating a new notebook, otherwise we are updating an existing one
         if notebook._id is None:
             insert_result = notebooks_collection.insert_one(notebook.as_anon_dict)
-            print(f'Inserted notebook result: {insert_result}')
+            db_utils.log(f'Inserted notebook result: {insert_result}')
         else:
             notebooks_collection.update_one(
                 { '_id': notebook._id },
@@ -164,9 +164,9 @@ class DatabaseInterface():
         Returns:
             dict: User document.
         """
-        print("USER BY ID")
-        print(f'User ID: {user_id}')
-        print(f'User ID type: {type(user_id)}')
+        db_utils.log("USER BY ID")
+        db_utils.log(f'User ID: {user_id}')
+        db_utils.log(f'User ID type: {type(user_id)}')
         
         self.connect()
         
