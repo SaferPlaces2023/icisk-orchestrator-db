@@ -88,8 +88,9 @@ class DatabaseInterface():
         notebooks_collection = self.db[DBS.Collections.NOTEBOOKS]
         
         # DOC: All notebooks will be visible to admin
-        if 'admin' not in notebook.authors:
-            notebook.authors.append('admin')
+        ADMIN_USER_ID = os.environ.get("ADMIN_USER_ID", "admin")
+        if ADMIN_USER_ID not in notebook.authors:
+            notebook.authors.append(ADMIN_USER_ID)
         
         # DOC: If notebook_id is None, we are creating a new notebook, otherwise we are updating an existing one
         if notebook._id is None:
